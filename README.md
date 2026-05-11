@@ -152,116 +152,138 @@ Menggunakan migration sangat disarankan saat tes koding karena menunjukkan kamu 
 
 ---
 
-### Langkah 4: Membuat Controller (CRUD & Validasi)
+### Langkah 4: Persiapan Session & Controller (CRUD & Validasi)
 
-Di sini kita tambahkan validasi agar aplikasi tidak *error* jika user memasukkan data kosong. Ini akan menjadi poin plus yang besar di mata *reviewer*!
+Agar notifikasi validasi (eror) bisa muncul, kita perlu mengaktifkan **Session** di `BaseController` dan mengatur logika pengiriman data di `PasienController`.
 
-1. Jalankan perintah:
-   ```bash
-   php spark make:controller PasienController
-   ```
+#### 1. Aktifkan Session di `app/Controllers/BaseController.php`
 
-2. Buka `app/Controllers/PasienController.php` dan isi dengan:
+Cari baris `$this->session` dan ubah menjadi:
 
-   ```php
-   <?php
+```php
+// app/Controllers/BaseController.php
 
-   namespace App\Controllers;
-   use App\Models\PasienModel;
+public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
+{
+    // ... baris lainnya
+    parent::initController($request, $response, $logger);
 
-   class PasienController extends BaseController
-   {
-       protected $pasienModel;
+    // Tambahkan baris ini untuk mengaktifkan session
+    $this->session = \Config\Services::session();
+}
+```
 
-       public function __construct()
-       {
-           $this->pasienModel = new PasienModel();
-       }
+#### 2. Buat Controller Pasien
 
-       public function index()
-       {
-           $data = [
-               'title' => 'Manajemen Data Pasien',
-               'pasien' => $this->pasienModel->orderBy('id_pasien', 'DESC')->findAll()
-           ];
-           return view('pasien/index', $data);
-       }
+Jalankan perintah:
+```bash
+php spark make:controller PasienController
+```
 
-       public function create()
-       {
-           // session() dikirim untuk menampilkan error validasi
-           $data = [
-               'title' => 'Tambah Pasien Baru',
-               'validation' => \Config\Services::validation()
-           ];
-           return view('pasien/create', $data);
-       }
+#### 3. Isi `app/Controllers/PasienController.php`
 
-       public function store()
-       {
-           // Validasi Input
-           if (!$this->validate([
-               'nomor_rm' => [
-                   'rules' => 'required|is_unique[pasien.nomor_rm]',
-                   'errors' => [
-                       'required' => 'Nomor RM harus diisi.',
-                       'is_unique' => 'Nomor RM sudah terdaftar.'
-                   ]
-               ],
-               'nama' => [
-                   'rules' => 'required',
-                   'errors' => ['required' => 'Nama pasien harus diisi.']
-               ]
-           ])) {
-               return redirect()->to('/pasien/create')->withInput();
-           }
+Buka file tersebut dan isi dengan kode yang sudah diperbaiki agar notifikasi validasi muncul:
 
-           // Simpan Data
-           $this->pasienModel->save([
-               'nomor_rm' => $this->request->getPost('nomor_rm'),
-               'nama'     => $this->request->getPost('nama'),
-               'alamat'   => $this->request->getPost('alamat')
-           ]);
+```php
+<?php
 
-           return redirect()->to('/pasien')->with('pesan', 'Data pasien berhasil ditambahkan.');
-       }
+namespace App\Controllers;
+use App\Models\PasienModel;
 
-       public function edit($id)
-       {
-           $data = [
-               'title' => 'Edit Data Pasien',
-               'validation' => \Config\Services::validation(),
-               'pasien' => $this->pasienModel->find($id)
-           ];
-           return view('pasien/edit', $data);
-       }
+class PasienController extends BaseController
+{
+    protected $pasienModel;
 
-       public function update($id)
-       {
-           // Validasi sederhana untuk update
-           if (!$this->validate([
-               'nama' => 'required'
-           ])) {
-               return redirect()->to('/pasien/edit/' . $id)->withInput();
-           }
+    public function __construct()
+    {
+        $this->pasienModel = new PasienModel();
+    }
 
-           $this->pasienModel->save([
-               'id_pasien' => $id,
-               'nomor_rm'  => $this->request->getPost('nomor_rm'),
-               'nama'      => $this->request->getPost('nama'),
-               'alamat'    => $this->request->getPost('alamat')
-           ]);
+    public function index()
+    {
+        $data = [
+            'title' => 'Manajemen Data Pasien',
+            'pasien' => $this->pasienModel->orderBy('id_pasien', 'DESC')->findAll()
+        ];
+        return view('pasien/index', $data);
+    }
 
-           return redirect()->to('/pasien')->with('pesan', 'Data pasien berhasil diubah.');
-       }
+    public function create()
+    {
+        // session('validation') digunakan untuk mengambil error dari flashdata
+        $data = [
+            'title' => 'Tambah Pasien Baru',
+            'validation' => session('validation') ?? \Config\Services::validation()
+        ];
+        return view('pasien/create', $data);
+    }
 
-       public function delete($id)
-       {
-           $this->pasienModel->delete($id);
-           return redirect()->to('/pasien')->with('pesan', 'Data pasien berhasil dihapus.');
-       }
-   }
-   ```
+    public function store()
+    {
+        // Validasi Input
+        if (!$this->validate([
+            'nomor_rm' => [
+                'rules' => 'required|is_unique[pasien.nomor_rm]',
+                'errors' => [
+                    'required' => 'Nomor RM harus diisi.',
+                    'is_unique' => 'Nomor RM sudah terdaftar.'
+                ]
+            ],
+            'nama' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Nama pasien harus diisi.']
+            ]
+        ])) {
+            // .with('validation', ...) mengirim objek error ke halaman berikutnya
+            return redirect()->to('/pasien/create')->withInput()->with('validation', \Config\Services::validation());
+        }
+
+        // Simpan Data
+        $this->pasienModel->save([
+            'nomor_rm' => $this->request->getPost('nomor_rm'),
+            'nama'     => $this->request->getPost('nama'),
+            'alamat'   => $this->request->getPost('alamat')
+        ]);
+
+        return redirect()->to('/pasien')->with('pesan', 'Data pasien berhasil ditambahkan.');
+    }
+
+    public function edit($id)
+    {
+        $data = [
+            'title' => 'Edit Data Pasien',
+            'validation' => session('validation') ?? \Config\Services::validation(),
+            'pasien' => $this->pasienModel->find($id)
+        ];
+        return view('pasien/edit', $data);
+    }
+
+    public function update($id)
+    {
+        // Validasi sederhana untuk update
+        if (!$this->validate([
+            'nama' => 'required'
+        ])) {
+            return redirect()->to('/pasien/edit/' . $id)->withInput()->with('validation', \Config\Services::validation());
+        }
+
+        $this->pasienModel->save([
+            'id_pasien' => $id,
+            'nomor_rm'  => $this->request->getPost('nomor_rm'),
+            'nama'      => $this->request->getPost('nama'),
+            'alamat'    => $this->request->getPost('alamat')
+        ]);
+
+        return redirect()->to('/pasien')->with('pesan', 'Data pasien berhasil diubah.');
+    }
+
+    public function delete($id)
+    {
+        $this->pasienModel->delete($id);
+        return redirect()->to('/pasien')->with('pesan', 'Data pasien berhasil dihapus.');
+    }
+}
+```
 
 ---
 

@@ -26,7 +26,7 @@ class PasienController extends BaseController
         // session() dikirim untuk menampilkan error validasi
         $data = [
             'title' => 'Tambah Pasien Baru',
-            'validation' => \Config\Services::validation()
+            'validation' => session('validation') ?? \Config\Services::validation()
         ];
         return view('pasien/create', $data);
     }
@@ -47,7 +47,7 @@ class PasienController extends BaseController
                 'errors' => ['required' => 'Nama pasien harus diisi.']
             ]
         ])) {
-            return redirect()->to('/pasien/create')->withInput();
+            return redirect()->to('/pasien/create')->withInput()->with('validation', \Config\Services::validation());
         }
 
         // Simpan Data
@@ -64,7 +64,7 @@ class PasienController extends BaseController
     {
         $data = [
             'title' => 'Edit Data Pasien',
-            'validation' => \Config\Services::validation(),
+            'validation' => session('validation') ?? \Config\Services::validation(),
             'pasien' => $this->pasienModel->find($id)
         ];
         return view('pasien/edit', $data);
@@ -76,7 +76,7 @@ class PasienController extends BaseController
         if (!$this->validate([
             'nama' => 'required'
         ])) {
-            return redirect()->to('/pasien/edit/' . $id)->withInput();
+            return redirect()->to('/pasien/edit/' . $id)->withInput()->with('validation', \Config\Services::validation());
         }
 
         $this->pasienModel->save([
