@@ -7,12 +7,12 @@ use App\Models\UserModel;
 /**
  * AuthController
  * 
- * Manages user authentication including login, registration, and logout.
+ * Mengelola autentikasi pengguna termasuk login, registrasi, dan logout.
  */
 class AuthController extends BaseController
 {
     /**
-     * Display login page
+     * Menampilkan halaman login
      */
     public function login()
     {
@@ -23,7 +23,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Process user login request
+     * Memproses permintaan login pengguna
      */
     public function processLogin()
     {
@@ -39,7 +39,7 @@ class AuthController extends BaseController
         $userModel = new UserModel();
         $user = $userModel->where('email', $this->request->getPost('email'))->first();
 
-        // Verify password against hashed version in DB
+        // Verifikasi password terhadap versi hash di database
         if ($user && password_verify($this->request->getPost('password'), $user['password'])) {
             $sessionData = [
                 'user_id'    => $user['id'],
@@ -57,7 +57,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Display registration page
+     * Menampilkan halaman registrasi
      */
     public function register()
     {
@@ -68,7 +68,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Process new user/patient registration
+     * Memproses registrasi pengguna/pasien baru
      */
     public function processRegister()
     {
@@ -91,7 +91,7 @@ class AuthController extends BaseController
         $db = \Config\Database::connect();
         $db->transStart();
 
-        // 1. Create User account
+        // 1. Buat akun User
         $userData = [
             'username' => $this->request->getPost('username'),
             'email'    => $this->request->getPost('email'),
@@ -101,12 +101,12 @@ class AuthController extends BaseController
         $userModel->insert($userData);
         $userId = $userModel->getInsertID();
 
-        // 2. Generate Medical Record Number (RM)
+        // 2. Generate Nomor Rekam Medis (RM)
         $datePart = date('ymd');
         $count = $pasienModel->where('DATE(created_at)', date('Y-m-d'))->countAllResults() + 1;
         $nomorRM = 'RM-' . $datePart . '-' . str_pad($count, 3, '0', STR_PAD_LEFT);
 
-        // 3. Create Patient Profile linked to the User
+        // 3. Buat Profil Pasien yang terhubung dengan User
         $pasienData = [
             'nomor_rm' => $nomorRM,
             'nama'     => $this->request->getPost('nama'),
@@ -125,7 +125,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Destroy user session and logout
+     * Menghancurkan session pengguna dan logout
      */
     public function logout()
     {

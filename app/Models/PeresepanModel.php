@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 /**
  * PeresepanModel
  * 
- * Manages core prescription data and joins with related entities.
+ * Mengelola data inti peresepan dan melakukan join dengan entitas terkait.
  */
 class PeresepanModel extends Model
 {
@@ -19,16 +19,16 @@ class PeresepanModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = ['pasien_id', 'dokter_id', 'user_id', 'tanggal', 'total_harga'];
 
-    // Dates
+    // Tanggal
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
     /**
-     * Get detailed prescription data including Patient, Doctor, and Admin names
+     * Mengambil data peresepan detail termasuk nama Pasien, Dokter, dan Admin
      * 
-     * @param int|null $id Specific prescription ID
+     * @param int|null $id ID peresepan spesifik
      * @return array|object
      */
     public function getPeresepanWithDetails($id = null)

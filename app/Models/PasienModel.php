@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 /**
  * PasienModel
  * 
- * Manages the data storage and retrieval for the 'pasien' table.
+ * Mengelola penyimpanan dan pengambilan data untuk tabel 'pasien'.
  */
 class PasienModel extends Model
 {
@@ -19,12 +19,12 @@ class PasienModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = ['nomor_rm', 'nama', 'alamat', 'user_id'];
 
-    // Dates
+    // Tanggal
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    // Logic for auto-incrementing / validation could go here
+    // Logika untuk auto-incrementing / validasi bisa ditambahkan di sini
 }

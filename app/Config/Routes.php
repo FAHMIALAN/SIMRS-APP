@@ -6,31 +6,25 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-/**
- * --------------------------------------------------------------------
- * Route Definitions
- * --------------------------------------------------------------------
- */
-
-// --- Public / Landing Page ---
+// --- Halaman Depan / Landing Page ---
 $routes->get('/', 'LandingController::index');
 
-// --- Authentication Routes ---
+// --- Rute Autentikasi ---
 $routes->get('/login', 'AuthController::login');
 $routes->post('/login/process', 'AuthController::processLogin');
 $routes->get('/register', 'AuthController::register');
 $routes->post('/register/process', 'AuthController::processRegister');
 $routes->get('/logout', 'AuthController::logout');
 
-// --- User / Patient Dashboard ---
+// --- Dashboard User / Pasien ---
 $routes->get('/user/dashboard', 'DashboardController::user');
 $routes->get('/user/peresepan/show/(:num)', 'DashboardController::userShowPeresepan/$1');
 
-// --- Admin Module (Grouped) ---
+// --- Modul Admin (Grup) ---
 $routes->group('admin', function($routes) {
     $routes->get('dashboard', 'DashboardController::admin');
 
-    // Doctor Management
+    // Manajemen Dokter
     $routes->get('dokter', 'DokterController::index');
     $routes->get('dokter/create', 'DokterController::create');
     $routes->post('dokter/store', 'DokterController::store');
@@ -38,7 +32,7 @@ $routes->group('admin', function($routes) {
     $routes->post('dokter/update/(:num)', 'DokterController::update/$1');
     $routes->get('dokter/delete/(:num)', 'DokterController::delete/$1');
 
-    // Medicine Management
+    // Manajemen Obat
     $routes->get('obat', 'ObatController::index');
     $routes->get('obat/create', 'ObatController::create');
     $routes->post('obat/store', 'ObatController::store');
@@ -46,14 +40,14 @@ $routes->group('admin', function($routes) {
     $routes->post('obat/update/(:num)', 'ObatController::update/$1');
     $routes->get('obat/delete/(:num)', 'ObatController::delete/$1');
 
-    // Prescription & Billing
+    // Peresepan & Billing
     $routes->get('peresepan', 'PeresepanController::index');
     $routes->get('peresepan/create', 'PeresepanController::create');
     $routes->post('peresepan/store', 'PeresepanController::store');
     $routes->get('peresepan/show/(:num)', 'PeresepanController::show/$1');
     $routes->get('peresepan/report', 'PeresepanController::report');
 
-    // User & Staff Management
+    // Manajemen User & Staf
     $routes->get('user', 'UserController::index');
     $routes->get('user/create', 'UserController::create');
     $routes->post('user/store', 'UserController::store');
@@ -62,7 +56,7 @@ $routes->group('admin', function($routes) {
     $routes->get('user/delete/(:num)', 'UserController::delete/$1');
 });
 
-// --- Patient CRUD (Legacy/Additional) ---
+// --- CRUD Pasien (Legacy/Tambahan) ---
 $routes->get('/pasien', 'PasienController::index');
 $routes->get('/pasien/create', 'PasienController::create');
 $routes->post('/pasien/store', 'PasienController::store');

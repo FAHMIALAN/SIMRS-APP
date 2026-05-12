@@ -50,7 +50,7 @@
                         <tr class="text-sm text-slate-700">
                             <td class="py-5 text-center text-slate-400 font-medium"><?= $i++ ?></td>
                             <td class="py-5 px-4 font-bold text-slate-800"><?= $d['nama_obat'] ?></td>
-                            <td class="py-5 px-4 text-right">Rp <?= number_format($d['harga'], 0, ',', '.') ?></td>
+                            <td class="py-5 px-4 text-right">Rp <?= number_format($d['harga_satuan'], 0, ',', '.') ?></td>
                             <td class="py-5 px-4 text-center font-semibold"><?= $d['jumlah'] ?></td>
                             <td class="py-5 px-4 text-right font-black text-slate-900">Rp <?= number_format($d['subtotal'], 0, ',', '.') ?></td>
                         </tr>

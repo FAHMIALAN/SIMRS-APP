@@ -4,6 +4,11 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ObatModel
+ * 
+ * Mengelola data inventaris obat medis.
+ */
 class ObatModel extends Model
 {
     protected $table            = 'obat';
@@ -14,7 +19,7 @@ class ObatModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = ['nama_obat', 'jenis', 'stok', 'harga'];
 
-    // Dates
+    // Tanggal
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';

@@ -10,12 +10,12 @@ use App\Models\PeresepanModel;
 /**
  * DashboardController
  * 
- * Manages the main dashboard views for both Admin and User/Patient roles.
+ * Mengelola tampilan dashboard utama untuk peran Admin dan User/Pasien.
  */
 class DashboardController extends BaseController
 {
     /**
-     * Admin Dashboard: Statistics and Recent Activity
+     * Dashboard Admin: Statistik dan Aktivitas Terbaru
      */
     public function admin()
     {
@@ -35,14 +35,14 @@ class DashboardController extends BaseController
             'total_peresepan' => $peresepanModel->countAllResults(),
             'total_penjualan' => $peresepanModel->selectSum('total_harga')->get()->getRow()->total_harga ?? 0,
             'recent_peresepan' => $peresepanModel->getPeresepanWithDetails(),
-            'title' => 'Admin Dashboard'
+            'title' => 'Dashboard Admin'
         ];
 
         return view('admin/dashboard', $data);
     }
 
     /**
-     * User/Patient Dashboard: Personal profile and medical history
+     * Dashboard User/Pasien: Profil pribadi dan riwayat medis
      */
     public function user()
     {
@@ -59,14 +59,14 @@ class DashboardController extends BaseController
         $riwayat = [];
         if ($pasien) {
             $allRiwayat = $peresepanModel->getPeresepanWithDetails();
-            // Filter records belonging to the current patient
+            // Filter catatan yang dimiliki oleh pasien saat ini
             $riwayat = array_filter($allRiwayat, function($r) use ($pasien) {
                 return $r['pasien_id'] == $pasien['id_pasien'];
             });
         }
 
         $data = [
-            'title' => 'User Dashboard',
+            'title' => 'Dashboard User',
             'pasien' => $pasien,
             'riwayat' => $riwayat
         ];
@@ -75,7 +75,7 @@ class DashboardController extends BaseController
     }
 
     /**
-     * Display detailed prescription/receipt for a user
+     * Menampilkan detail peresepan/struk untuk pengguna
      */
     public function userShowPeresepan($id)
     {
@@ -91,7 +91,7 @@ class DashboardController extends BaseController
         $pasien = $pasienModel->where('user_id', $userId)->first();
         $peresepan = $peresepanModel->getPeresepanWithDetails($id);
 
-        // Security check: ensure user only sees their own prescription
+        // Pemeriksaan keamanan: pastikan pengguna hanya melihat peresepan milik mereka sendiri
         if (!$pasien || !$peresepan || $peresepan['pasien_id'] != $pasien['id_pasien']) {
             return redirect()->to('/user/dashboard')->with('error', 'Akses ditolak atau data tidak ditemukan.');
         }

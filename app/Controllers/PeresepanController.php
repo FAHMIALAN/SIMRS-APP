@@ -11,8 +11,8 @@ use App\Models\ObatModel;
 /**
  * PeresepanController
  * 
- * Handles all logic related to medical prescriptions including
- * creation, history, details, and reporting.
+ * Mengatur semua logika terkait peresepan obat medis termasuk
+ * pembuatan, riwayat, detail, dan pelaporan.
  */
 class PeresepanController extends BaseController
 {
@@ -57,7 +57,7 @@ class PeresepanController extends BaseController
     }
 
     /**
-     * Display a list of all prescriptions
+     * Menampilkan daftar semua peresepan
      */
     public function index()
     {
@@ -69,7 +69,7 @@ class PeresepanController extends BaseController
     }
 
     /**
-     * Show form to create a new prescription
+     * Menampilkan form untuk membuat peresepan baru
      */
     public function create()
     {
@@ -83,7 +83,7 @@ class PeresepanController extends BaseController
     }
 
     /**
-     * Store a new prescription and its details in the database
+     * Menyimpan peresepan baru dan detailnya ke dalam database
      */
     public function store()
     {
@@ -105,7 +105,7 @@ class PeresepanController extends BaseController
         $totalHarga = 0;
         $details = [];
 
-        // Transaction logic for atomicity
+        // Logika transaksi untuk memastikan integritas data (atomicity)
         $this->db->transStart();
 
         foreach ($obatIds as $key => $obatId) {
@@ -120,7 +120,7 @@ class PeresepanController extends BaseController
                     'subtotal' => $subtotal
                 ];
 
-                // Deduct medicine stock
+                // Kurangi stok obat
                 $this->obatModel->update($obatId, ['stok' => $obat['stok'] - $qty]);
             }
         }
@@ -156,7 +156,7 @@ class PeresepanController extends BaseController
     }
 
     /**
-     * Show detailed view of a specific prescription
+     * Menampilkan tampilan detail dari peresepan tertentu
      */
     public function show($id)
     {
@@ -169,7 +169,7 @@ class PeresepanController extends BaseController
     }
 
     /**
-     * Generate daily or monthly sales reports
+     * Menghasilkan laporan penjualan harian atau bulanan
      */
     public function report()
     {
@@ -182,7 +182,7 @@ class PeresepanController extends BaseController
         $builder->join('pasien', 'pasien.id_pasien = peresepan.pasien_id');
         $builder->join('dokter', 'dokter.id = peresepan.dokter_id');
         
-        // Dynamic filtering based on input
+        // Pemfilteran dinamis berdasarkan input
         if ($tanggal) {
             $builder->where('peresepan.tanggal', $tanggal);
         } else {

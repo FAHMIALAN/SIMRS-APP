@@ -7,7 +7,7 @@ use App\Models\UserModel;
 /**
  * UserController
  * 
- * Manages the users who can access the system, including creating admins and staff.
+ * Mengelola pengguna yang dapat mengakses sistem, termasuk pembuatan admin dan staf.
  */
 class UserController extends BaseController
 {
@@ -22,7 +22,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Display a list of all registered users
+     * Menampilkan daftar semua pengguna yang terdaftar
      */
     public function index()
     {
@@ -34,7 +34,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Show form to create a new user
+     * Menampilkan form untuk membuat pengguna baru
      */
     public function create()
     {
@@ -46,7 +46,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Store a new user in the database
+     * Menyimpan pengguna baru ke dalam database
      */
     public function store()
     {
@@ -72,7 +72,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Show form to edit an existing user
+     * Menampilkan form untuk mengedit pengguna yang sudah ada
      */
     public function edit($id)
     {
@@ -85,7 +85,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Update user details in the database
+     * Memperbarui detail pengguna di database
      */
     public function update($id)
     {
@@ -95,7 +95,7 @@ class UserController extends BaseController
             'role'     => 'required'
         ];
 
-        // Only validate password if it's being changed
+        // Hanya validasi password jika sedang diubah
         if ($this->request->getPost('password')) {
             $rules['password'] = 'min_length[6]';
         }
@@ -121,7 +121,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Delete a user record (prevents self-deletion)
+     * Menghapus catatan pengguna (mencegah penghapusan diri sendiri)
      */
     public function delete($id)
     {
