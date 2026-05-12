@@ -25,7 +25,8 @@ class DashboardController extends BaseController
             'total_dokter' => $dokterModel->countAllResults(),
             'total_obat'   => $obatModel->countAllResults(),
             'total_peresepan' => $peresepanModel->countAllResults(),
-            'recent_peresepan' => $peresepanModel->orderBy('tanggal', 'DESC')->findAll(5),
+            'total_penjualan' => $peresepanModel->selectSum('total_harga')->get()->getRow()->total_harga ?? 0,
+            'recent_peresepan' => $peresepanModel->getPeresepanWithDetails(), // Update this to get patient names
             'title' => 'Admin Dashboard'
         ];
 

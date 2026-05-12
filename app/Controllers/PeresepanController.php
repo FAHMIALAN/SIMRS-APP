@@ -91,7 +91,8 @@ class PeresepanController extends BaseController
         $peresepanData = [
             'pasien_id' => $this->request->getPost('pasien_id'),
             'dokter_id' => $this->request->getPost('dokter_id'),
-            'tanggal' => $this->request->getPost('tanggal'),
+            'user_id'   => session()->get('user_id'),
+            'tanggal'   => $this->request->getPost('tanggal'),
             'total_harga' => $totalHarga
         ];
 
@@ -124,6 +125,7 @@ class PeresepanController extends BaseController
 
     public function report()
     {
+        $tanggal = $this->request->getGet('tanggal');
         $bulan = $this->request->getGet('bulan') ?? date('m');
         $tahun = $this->request->getGet('tahun') ?? date('Y');
 
@@ -131,15 +133,22 @@ class PeresepanController extends BaseController
         $builder->select('peresepan.*, pasien.nama as nama_pasien, dokter.nama as nama_dokter');
         $builder->join('pasien', 'pasien.id_pasien = peresepan.pasien_id');
         $builder->join('dokter', 'dokter.id = peresepan.dokter_id');
-        $builder->where('MONTH(peresepan.tanggal)', $bulan, false);
-        $builder->where('YEAR(peresepan.tanggal)', $tahun, false);
+        
+        if ($tanggal) {
+            $builder->where('peresepan.tanggal', $tanggal);
+        } else {
+            $builder->where('MONTH(peresepan.tanggal)', $bulan, false);
+            $builder->where('YEAR(peresepan.tanggal)', $tahun, false);
+        }
+        
         $peresepan = $builder->get()->getResultArray();
 
         $data = [
             'title' => 'Laporan Peresepan Obat',
             'peresepan' => $peresepan,
             'bulan' => $bulan,
-            'tahun' => $tahun
+            'tahun' => $tahun,
+            'tanggal_filter' => $tanggal
         ];
         return view('admin/peresepan/report', $data);
     }

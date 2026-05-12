@@ -14,8 +14,13 @@ $months = ['01'=>'Januari', '02'=>'Februari', '03'=>'Maret', '04'=>'April', '05'
     <div class="p-8">
         <form action="<?= base_url('admin/peresepan/report') ?>" method="GET" class="flex flex-wrap items-end gap-6">
             <div class="w-full sm:w-48">
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Bulan</label>
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pilih Tanggal (Harian)</label>
+                <input type="date" name="tanggal" class="input-field py-2 text-sm" value="<?= $tanggal_filter ?>">
+            </div>
+            <div class="w-full sm:w-40">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Bulan (Bulanan)</label>
                 <select name="bulan" class="input-field py-2 text-sm">
+                    <option value="">-- Pilih Bulan --</option>
                     <?php foreach($months as $k => $v): ?>
                         <option value="<?= $k ?>" <?= $bulan == $k ? 'selected' : '' ?>><?= $v ?></option>
                     <?php endforeach; ?>
@@ -44,8 +49,10 @@ $months = ['01'=>'Januari', '02'=>'Februari', '03'=>'Maret', '04'=>'April', '05'
 <div class="card p-0 overflow-hidden" id="report-print-area">
     <div class="hidden print:block p-10 border-b-2 border-slate-900 text-center">
         <h1 class="text-4xl font-black tracking-tighter">SIMRS <span class="text-blue-600">PRO</span></h1>
-        <h2 class="text-xl font-bold mt-2 uppercase tracking-widest text-slate-700">Laporan Bulanan Peresepan Obat</h2>
-        <p class="text-slate-500 font-medium mt-1">Periode: <?= $months[str_pad($bulan, 2, '0', STR_PAD_LEFT)] ?> <?= $tahun ?></p>
+        <h2 class="text-xl font-bold mt-2 uppercase tracking-widest text-slate-700">Laporan <?= $tanggal_filter ? 'Harian' : 'Bulanan' ?> Peresepan Obat</h2>
+        <p class="text-slate-500 font-medium mt-1">
+            Periode: <?= $tanggal_filter ? date('d M Y', strtotime($tanggal_filter)) : ($bulan ? $months[str_pad($bulan, 2, '0', STR_PAD_LEFT)] . ' ' . $tahun : $tahun) ?>
+        </p>
     </div>
 
     <div class="overflow-x-auto">

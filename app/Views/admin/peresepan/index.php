@@ -21,6 +21,7 @@
                     <th class="px-8 py-4">Tanggal Transaksi</th>
                     <th class="px-8 py-4">Pasien</th>
                     <th class="px-8 py-4">Dokter</th>
+                    <th class="px-8 py-4">Admin Pengelola</th>
                     <th class="px-8 py-4 text-right">Total Tagihan</th>
                     <th class="px-8 py-4 text-right">Aksi</th>
                 </tr>
@@ -41,6 +42,9 @@
                             </td>
                             <td class="px-8 py-5">
                                 <div class="text-sm text-slate-600 italic"><?= $p['nama_dokter'] ?></div>
+                            </td>
+                            <td class="px-8 py-5">
+                                <div class="text-xs font-bold text-slate-500 uppercase"><?= $p['nama_admin'] ?? 'System' ?></div>
                             </td>
                             <td class="px-8 py-5 text-right font-bold text-emerald-600 text-sm">
                                 Rp <?= number_format($p['total_harga'], 0, ',', '.') ?>

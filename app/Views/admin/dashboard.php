@@ -47,6 +47,17 @@
             <h3 class="text-2xl font-bold text-slate-800"><?= $total_peresepan ?></h3>
         </div>
     </div>
+
+    <!-- Total Penjualan -->
+    <div class="card p-6 flex items-center group hover:border-emerald-500 transition-all">
+        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-emerald-600 group-hover:text-white transition-all">
+            <i class="fas fa-money-bill-wave"></i>
+        </div>
+        <div class="ml-5">
+            <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Penjualan</p>
+            <h3 class="text-2xl font-bold text-slate-800">Rp <?= number_format($total_penjualan, 0, ',', '.') ?></h3>
+        </div>
+    </div>
 </div>
 
 <!-- Recent Activities Table -->

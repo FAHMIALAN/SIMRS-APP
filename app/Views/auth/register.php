@@ -59,6 +59,22 @@
                         </div>
                     </div>
 
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Nama Lengkap Pasien</label>
+                        <div class="relative">
+                            <i class="fas fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                            <input type="text" name="nama" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all placeholder:text-slate-400" value="<?= old('nama') ?>" required placeholder="Sesuai KTP">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Alamat Lengkap</label>
+                        <div class="relative">
+                            <i class="fas fa-map-marker-alt absolute left-4 top-4 text-slate-400 text-sm"></i>
+                            <textarea name="alamat" rows="2" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all placeholder:text-slate-400" required placeholder="Alamat tinggal saat ini"><?= old('alamat') ?></textarea>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>

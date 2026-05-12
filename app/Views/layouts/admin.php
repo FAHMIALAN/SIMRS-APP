@@ -83,6 +83,9 @@
             <a href="<?= base_url('admin/peresepan/report') ?>" class="sidebar-link <?= strpos(uri_string(), 'admin/peresepan/report') === 0 ? 'active' : '' ?>">
                 <i class="fas fa-chart-bar w-6"></i> Laporan
             </a>
+            <a href="<?= base_url('admin/user') ?>" class="sidebar-link <?= strpos(uri_string(), 'admin/user') === 0 ? 'active' : '' ?>">
+                <i class="fas fa-user-cog w-6"></i> Manajemen User
+            </a>
         </nav>
 
         <div class="p-4 border-t border-white/10">
