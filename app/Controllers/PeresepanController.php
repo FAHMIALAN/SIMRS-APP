@@ -8,13 +8,42 @@ use App\Models\PasienModel;
 use App\Models\DokterModel;
 use App\Models\ObatModel;
 
+/**
+ * PeresepanController
+ * 
+ * Handles all logic related to medical prescriptions including
+ * creation, history, details, and reporting.
+ */
 class PeresepanController extends BaseController
 {
+    /**
+     * @var PeresepanModel
+     */
     protected $peresepanModel;
+
+    /**
+     * @var PeresepanDetailModel
+     */
     protected $peresepanDetailModel;
+
+    /**
+     * @var PasienModel
+     */
     protected $pasienModel;
+
+    /**
+     * @var DokterModel
+     */
     protected $dokterModel;
+
+    /**
+     * @var ObatModel
+     */
     protected $obatModel;
+
+    /**
+     * @var \CodeIgniter\Database\BaseConnection
+     */
     protected $db;
 
     public function __construct()
@@ -27,15 +56,21 @@ class PeresepanController extends BaseController
         $this->obatModel = new ObatModel();
     }
 
+    /**
+     * Display a list of all prescriptions
+     */
     public function index()
     {
         $data = [
-            'title' => 'Daftar Peresepan',
+            'title' => 'Riwayat Peresepan',
             'peresepan' => $this->peresepanModel->getPeresepanWithDetails()
         ];
         return view('admin/peresepan/index', $data);
     }
 
+    /**
+     * Show form to create a new prescription
+     */
     public function create()
     {
         $data = [
@@ -47,6 +82,9 @@ class PeresepanController extends BaseController
         return view('admin/peresepan/create', $data);
     }
 
+    /**
+     * Store a new prescription and its details in the database
+     */
     public function store()
     {
         $rules = [
@@ -67,6 +105,9 @@ class PeresepanController extends BaseController
         $totalHarga = 0;
         $details = [];
 
+        // Transaction logic for atomicity
+        $this->db->transStart();
+
         foreach ($obatIds as $key => $obatId) {
             $obat = $this->obatModel->find($obatId);
             $qty = $jumlahs[$key];
@@ -79,12 +120,13 @@ class PeresepanController extends BaseController
                     'subtotal' => $subtotal
                 ];
 
-                // Kurangi stok
+                // Deduct medicine stock
                 $this->obatModel->update($obatId, ['stok' => $obat['stok'] - $qty]);
             }
         }
 
         if(empty($details)) {
+             $this->db->transRollback();
              return redirect()->back()->withInput()->with('error', 'Pilih minimal 1 obat.');
         }
 
@@ -96,7 +138,6 @@ class PeresepanController extends BaseController
             'total_harga' => $totalHarga
         ];
 
-        $this->db->transStart();
         $this->peresepanModel->insert($peresepanData);
         $peresepanId = $this->peresepanModel->getInsertID();
 
@@ -104,15 +145,19 @@ class PeresepanController extends BaseController
             $detail['peresepan_id'] = $peresepanId;
         }
         $this->peresepanDetailModel->insertBatch($details);
+
         $this->db->transComplete();
 
         if ($this->db->transStatus() === false) {
-             return redirect()->back()->withInput()->with('error', 'Gagal menyimpan peresepan.');
+             return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data peresepan.');
         }
 
-        return redirect()->to('/admin/peresepan')->with('success', 'Peresepan berhasil disimpan.');
+        return redirect()->to('/admin/peresepan')->with('success', 'Transaksi peresepan berhasil disimpan.');
     }
 
+    /**
+     * Show detailed view of a specific prescription
+     */
     public function show($id)
     {
         $data = [
@@ -123,6 +168,9 @@ class PeresepanController extends BaseController
         return view('admin/peresepan/show', $data);
     }
 
+    /**
+     * Generate daily or monthly sales reports
+     */
     public function report()
     {
         $tanggal = $this->request->getGet('tanggal');
@@ -134,6 +182,7 @@ class PeresepanController extends BaseController
         $builder->join('pasien', 'pasien.id_pasien = peresepan.pasien_id');
         $builder->join('dokter', 'dokter.id = peresepan.dokter_id');
         
+        // Dynamic filtering based on input
         if ($tanggal) {
             $builder->where('peresepan.tanggal', $tanggal);
         } else {

@@ -78,7 +78,7 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-10">
         <div class="max-w-7xl mx-auto px-6 text-center text-slate-500 text-sm">
-            <p>&copy; <?= date('Y') ?> SIMRS Pro. Melayani dengan hati dan teknologi.</p>
+            <p>&copy; <?= date('Y') ?> SIMRS Pro.</p>
         </div>
     </footer>
 

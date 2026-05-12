@@ -23,7 +23,7 @@ class PeresepanDetailModel extends Model
     public function getDetailsByPeresepanId($peresepanId)
     {
         return $this->db->table($this->table)
-            ->select('peresepan_detail.*, obat.nama_obat, obat.harga')
+            ->select('peresepan_detail.*, obat.nama_obat, obat.harga as harga_satuan')
             ->join('obat', 'obat.id = peresepan_detail.obat_id')
             ->where('peresepan_id', $peresepanId)
             ->get()->getResultArray();
