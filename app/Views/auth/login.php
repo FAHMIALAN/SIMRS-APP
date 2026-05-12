@@ -86,7 +86,7 @@
             </div>
             
             <p class="text-center text-slate-400 text-xs mt-10">
-                &copy; <?= date('Y') ?> SIMRS Pro Team. Built with heart for better healthcare.
+                &copy; <?= date('Y') ?> SIMRS Pro Team.
             </p>
         </div>
     </div>
