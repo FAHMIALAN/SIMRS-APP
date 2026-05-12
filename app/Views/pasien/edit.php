@@ -1,47 +1,54 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <title><?= $title; ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-warning">
-                    <h5 class="mb-0">Edit Data Pasien</h5>
-                </div>
-                <div class="card-body">
-                    <form action="/pasien/update/<?= $pasien['id_pasien']; ?>" method="post">
-                        <?= csrf_field(); ?>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Nomor Rekam Medis (RM)</label>
-                            <input type="text" name="nomor_rm" class="form-control" value="<?= old('nomor_rm', $pasien['nomor_rm']); ?>" readonly>
-                            <small class="text-muted">Nomor RM tidak dapat diubah.</small>
-                        </div>
+<?= $this->extend('layouts/admin') ?>
 
-                        <div class="mb-3">
-                            <label class="form-label">Nama Lengkap</label>
-                            <input type="text" name="nama" class="form-control <?= ($validation->hasError('nama')) ? 'is-invalid' : ''; ?>" value="<?= old('nama', $pasien['nama']); ?>">
-                            <div class="invalid-feedback"><?= $validation->getError('nama'); ?></div>
-                        </div>
+<?= $this->section('content') ?>
 
-                        <div class="mb-3">
-                            <label class="form-label">Alamat Lengkap</label>
-                            <textarea name="alamat" class="form-control" rows="3"><?= old('alamat', $pasien['alamat']); ?></textarea>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="/pasien" class="btn btn-secondary">Batal</a>
-                            <button type="submit" class="btn btn-primary">Update Data</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="max-w-2xl mx-auto">
+    <div class="card p-10">
+        <div class="mb-8 border-b border-slate-100 pb-6">
+            <h2 class="text-2xl font-bold text-slate-800">Edit Data Pasien</h2>
+            <p class="text-slate-500 mt-1">Perbarui informasi rekam medis pasien.</p>
         </div>
+        
+        <form action="<?= base_url('pasien/update/'.$pasien['id_pasien']) ?>" method="POST" class="space-y-6">
+            <?= csrf_field() ?>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Nomor Rekam Medis (RM)</label>
+                <div class="relative group">
+                    <i class="fas fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" name="nomor_rm" class="input-field pl-11 bg-slate-100 cursor-not-allowed opacity-80" value="<?= old('nomor_rm', $pasien['nomor_rm']) ?>" readonly>
+                </div>
+                <p class="mt-2 text-xs text-slate-500 flex items-center gap-2">
+                    <i class="fas fa-info-circle"></i> Nomor RM tidak dapat diubah untuk integritas data.
+                </p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Nama Lengkap Pasien</label>
+                <div class="relative group">
+                    <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" name="nama" class="input-field pl-11" value="<?= old('nama', $pasien['nama']) ?>" required>
+                </div>
+                <?php if($validation->hasError('nama')): ?>
+                    <p class="mt-2 text-xs font-medium text-rose-500"><?= $validation->getError('nama') ?></p>
+                <?php endif; ?>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Alamat Lengkap</label>
+                <textarea name="alamat" class="input-field min-h-[120px] py-3" placeholder="Masukkan alamat pasien"><?= old('alamat', $pasien['alamat']) ?></textarea>
+            </div>
+            
+            <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
+                <a href="<?= base_url('pasien') ?>" class="px-6 py-2.5 text-slate-600 font-bold hover:bg-slate-100 rounded-lg transition-all text-sm">
+                    Kembali
+                </a>
+                <button type="submit" class="btn btn-primary px-8">
+                    <i class="fas fa-sync-alt"></i> Perbarui Data
+                </button>
+            </div>
+        </form>
     </div>
 </div>
-</body>
-</html>
+
+<?= $this->endSection() ?>
