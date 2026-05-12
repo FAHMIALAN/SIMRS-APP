@@ -65,25 +65,25 @@
         </div>
         
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            <a href="<?= base_url('admin/dashboard') ?>" class="sidebar-link <?= uri_string() == 'admin/dashboard' ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/dashboard') ?>" class="sidebar-link <?= url_is('admin/dashboard') ? 'active' : '' ?>">
                 <i class="fas fa-home w-6"></i> Dashboard
             </a>
-            <a href="<?= base_url('pasien') ?>" class="sidebar-link <?= strpos(uri_string(), 'pasien') === 0 ? 'active' : '' ?>">
+            <a href="<?= base_url('pasien') ?>" class="sidebar-link <?= url_is('pasien*') ? 'active' : '' ?>">
                 <i class="fas fa-users w-6"></i> Pasien
             </a>
-            <a href="<?= base_url('admin/dokter') ?>" class="sidebar-link <?= strpos(uri_string(), 'admin/dokter') === 0 ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/dokter') ?>" class="sidebar-link <?= url_is('admin/dokter*') ? 'active' : '' ?>">
                 <i class="fas fa-user-md w-6"></i> Dokter
             </a>
-            <a href="<?= base_url('admin/obat') ?>" class="sidebar-link <?= strpos(uri_string(), 'admin/obat') === 0 ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/obat') ?>" class="sidebar-link <?= url_is('admin/obat*') ? 'active' : '' ?>">
                 <i class="fas fa-pills w-6"></i> Obat
             </a>
-            <a href="<?= base_url('admin/peresepan') ?>" class="sidebar-link <?= strpos(uri_string(), 'admin/peresepan') === 0 ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/peresepan') ?>" class="sidebar-link <?= (url_is('admin/peresepan*') && !url_is('admin/peresepan/report*')) ? 'active' : '' ?>">
                 <i class="fas fa-file-prescription w-6"></i> Peresepan
             </a>
-            <a href="<?= base_url('admin/peresepan/report') ?>" class="sidebar-link <?= strpos(uri_string(), 'admin/peresepan/report') === 0 ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/peresepan/report') ?>" class="sidebar-link <?= url_is('admin/peresepan/report*') ? 'active' : '' ?>">
                 <i class="fas fa-chart-bar w-6"></i> Laporan
             </a>
-            <a href="<?= base_url('admin/user') ?>" class="sidebar-link <?= strpos(uri_string(), 'admin/user') === 0 ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/user') ?>" class="sidebar-link <?= url_is('admin/user*') ? 'active' : '' ?>">
                 <i class="fas fa-user-cog w-6"></i> Manajemen User
             </a>
         </nav>

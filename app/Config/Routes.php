@@ -30,7 +30,7 @@ $routes->group('admin', function($routes) {
     $routes->post('dokter/store', 'DokterController::store');
     $routes->get('dokter/edit/(:num)', 'DokterController::edit/$1');
     $routes->post('dokter/update/(:num)', 'DokterController::update/$1');
-    $routes->get('dokter/delete/(:num)', 'DokterController::delete/$1');
+    $routes->post('dokter/delete/(:num)', 'DokterController::delete/$1');
 
     // Manajemen Obat
     $routes->get('obat', 'ObatController::index');
@@ -38,13 +38,16 @@ $routes->group('admin', function($routes) {
     $routes->post('obat/store', 'ObatController::store');
     $routes->get('obat/edit/(:num)', 'ObatController::edit/$1');
     $routes->post('obat/update/(:num)', 'ObatController::update/$1');
-    $routes->get('obat/delete/(:num)', 'ObatController::delete/$1');
+    $routes->post('obat/delete/(:num)', 'ObatController::delete/$1');
 
     // Peresepan & Billing
     $routes->get('peresepan', 'PeresepanController::index');
     $routes->get('peresepan/create', 'PeresepanController::create');
     $routes->post('peresepan/store', 'PeresepanController::store');
     $routes->get('peresepan/show/(:num)', 'PeresepanController::show/$1');
+    $routes->get('peresepan/edit/(:num)', 'PeresepanController::edit/$1');
+    $routes->post('peresepan/update/(:num)', 'PeresepanController::update/$1');
+    $routes->post('peresepan/delete/(:num)', 'PeresepanController::delete/$1');
     $routes->get('peresepan/report', 'PeresepanController::report');
 
     // Manajemen User & Staf
@@ -53,7 +56,7 @@ $routes->group('admin', function($routes) {
     $routes->post('user/store', 'UserController::store');
     $routes->get('user/edit/(:num)', 'UserController::edit/$1');
     $routes->post('user/update/(:num)', 'UserController::update/$1');
-    $routes->get('user/delete/(:num)', 'UserController::delete/$1');
+    $routes->post('user/delete/(:num)', 'UserController::delete/$1');
 });
 
 // --- CRUD Pasien (Legacy/Tambahan) ---
@@ -62,4 +65,4 @@ $routes->get('/pasien/create', 'PasienController::create');
 $routes->post('/pasien/store', 'PasienController::store');
 $routes->get('/pasien/edit/(:num)', 'PasienController::edit/$1');
 $routes->post('/pasien/update/(:num)', 'PasienController::update/$1');
-$routes->get('/pasien/delete/(:num)', 'PasienController::delete/$1');
+$routes->post('/pasien/delete/(:num)', 'PasienController::delete/$1');

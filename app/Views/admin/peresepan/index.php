@@ -49,10 +49,18 @@
                             <td class="px-8 py-5 text-right font-bold text-emerald-600 text-sm">
                                 Rp <?= number_format($p['total_harga'], 0, ',', '.') ?>
                             </td>
-                            <td class="px-8 py-5 text-right">
-                                <a href="<?= base_url('admin/peresepan/show/'.$p['id']) ?>" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-all text-xs font-bold">
-                                    <i class="fas fa-eye"></i> Detail
+                            <td class="px-8 py-5 text-right flex justify-end gap-2">
+                                <a href="<?= base_url('admin/peresepan/show/'.$p['id']) ?>" class="w-9 h-9 flex items-center justify-center bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-all" title="Detail">
+                                    <i class="fas fa-eye text-sm"></i>
                                 </a>
+                                <a href="<?= base_url('admin/peresepan/edit/'.$p['id']) ?>" class="w-9 h-9 flex items-center justify-center bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white rounded-lg transition-all" title="Edit">
+                                    <i class="fas fa-edit text-sm"></i>
+                                </a>
+                                <form action="<?= base_url('admin/peresepan/delete/'.$p['id']) ?>" method="post" onsubmit="return confirm('Hapus transaksi ini dan kembalikan stok?');" class="inline">
+                                    <button type="submit" class="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-lg transition-all" title="Hapus">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

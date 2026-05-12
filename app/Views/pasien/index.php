@@ -37,9 +37,11 @@
                                 <a href="<?= base_url('pasien/edit/'.$p['id_pasien']) ?>" class="w-9 h-9 flex items-center justify-center bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white rounded-lg transition-all" title="Edit">
                                     <i class="fas fa-edit text-sm"></i>
                                 </a>
-                                <a href="<?= base_url('pasien/delete/'.$p['id_pasien']) ?>" class="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-lg transition-all" onclick="return confirm('Yakin ingin menghapus pasien ini?');" title="Hapus">
-                                    <i class="fas fa-trash text-sm"></i>
-                                </a>
+                                <form action="<?= base_url('pasien/delete/'.$p['id_pasien']) ?>" method="post" onsubmit="return confirm('Yakin ingin menghapus pasien ini?');">
+                                    <button type="submit" class="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-lg transition-all" title="Hapus">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

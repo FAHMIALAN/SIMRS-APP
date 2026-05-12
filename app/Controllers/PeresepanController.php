@@ -201,4 +201,128 @@ class PeresepanController extends BaseController
         ];
         return view('admin/peresepan/report', $data);
     }
+
+    /**
+     * Menampilkan form edit peresepan
+     */
+    public function edit($id)
+    {
+        $peresepan = $this->peresepanModel->find($id);
+        if (!$peresepan) {
+            return redirect()->to('/admin/peresepan')->with('error', 'Data tidak ditemukan.');
+        }
+
+        $data = [
+            'title'     => 'Edit Peresepan',
+            'peresepan' => $peresepan,
+            'details'   => $this->peresepanDetailModel->getDetailsByPeresepanId($id),
+            'pasien'    => $this->pasienModel->findAll(),
+            'dokter'    => $this->dokterModel->findAll(),
+            'obat'      => $this->obatModel->findAll()
+        ];
+        return view('admin/peresepan/edit', $data);
+    }
+
+    /**
+     * Memperbarui data peresepan dan menyesuaikan stok obat
+     */
+    public function update($id)
+    {
+        $rules = [
+            'pasien_id' => 'required',
+            'dokter_id' => 'required',
+            'tanggal'   => 'required|valid_date',
+            'obat_id'   => 'required',
+            'jumlah'    => 'required'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $this->db->transStart();
+
+        // 1. Kembalikan stok lama ke inventory
+        $oldDetails = $this->peresepanDetailModel->where('peresepan_id', $id)->findAll();
+        foreach ($oldDetails as $old) {
+            $obat = $this->obatModel->find($old['obat_id']);
+            if ($obat) {
+                $this->obatModel->update($old['obat_id'], ['stok' => $obat['stok'] + $old['jumlah']]);
+            }
+        }
+
+        // 2. Hapus detail lama
+        $this->peresepanDetailModel->where('peresepan_id', $id)->delete();
+
+        // 3. Proses input baru dan kurangi stok baru
+        $obatIds = $this->request->getPost('obat_id');
+        $jumlahs = $this->request->getPost('jumlah');
+        $totalHarga = 0;
+        $details = [];
+
+        foreach ($obatIds as $key => $obatId) {
+            $obat = $this->obatModel->find($obatId);
+            $qty = (float)$jumlahs[$key];
+            if ($obat && $qty > 0) {
+                $subtotal = $obat['harga'] * $qty;
+                $totalHarga += $subtotal;
+                $details[] = [
+                    'peresepan_id' => $id,
+                    'obat_id'      => $obatId,
+                    'jumlah'       => $qty,
+                    'subtotal'     => $subtotal
+                ];
+                // Kurangi stok baru
+                $currentObat = $this->obatModel->find($obatId);
+                $this->obatModel->update($obatId, ['stok' => $currentObat['stok'] - $qty]);
+            }
+        }
+
+        // 4. Update record utama peresepan
+        $this->peresepanModel->update($id, [
+            'pasien_id'   => $this->request->getPost('pasien_id'),
+            'dokter_id'   => $this->request->getPost('dokter_id'),
+            'tanggal'     => $this->request->getPost('tanggal'),
+            'total_harga' => $totalHarga
+        ]);
+
+        // 5. Simpan detail baru
+        $this->peresepanDetailModel->insertBatch($details);
+
+        $this->db->transComplete();
+
+        if ($this->db->transStatus() === false) {
+            return redirect()->back()->withInput()->with('error', 'Gagal memperbarui transaksi peresepan.');
+        }
+
+        return redirect()->to('/admin/peresepan')->with('success', 'Transaksi peresepan berhasil diperbarui.');
+    }
+
+    /**
+     * Menghapus peresepan dan mengembalikan stok obat
+     */
+    public function delete($id)
+    {
+        $this->db->transStart();
+
+        // Ambil detail untuk mengembalikan stok
+        $details = $this->peresepanDetailModel->where('peresepan_id', $id)->findAll();
+        foreach ($details as $d) {
+            $obat = $this->obatModel->find($d['obat_id']);
+            if ($obat) {
+                $this->obatModel->update($d['obat_id'], ['stok' => $obat['stok'] + $d['jumlah']]);
+            }
+        }
+
+        // Hapus data utama (detail akan terhapus otomatis oleh DB CASCADE)
+        $this->peresepanModel->delete($id);
+
+        $this->db->transComplete();
+
+        if ($this->db->transStatus() === false) {
+            return redirect()->to('/admin/peresepan')->with('error', 'Gagal menghapus data peresepan.');
+        }
+
+        return redirect()->to('/admin/peresepan')->with('success', 'Data peresepan berhasil dihapus dan stok dikembalikan.');
+    }
 }

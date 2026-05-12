@@ -17,7 +17,7 @@ class DokterModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama', 'spesialis', 'telepon'];
+    protected $allowedFields    = ['nama', 'spesialis', 'no_telp'];
 
     // Tanggal
     protected $useTimestamps = true;

@@ -26,9 +26,9 @@ class PeresepanDetail extends Migration
                 'unsigned'       => true,
             ],
             'jumlah' => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'default'    => 1,
+                'type'       => 'DECIMAL',
+                'constraint' => '10,2',
+                'default'    => 0.00,
             ],
             'subtotal' => [
                 'type'       => 'DECIMAL',

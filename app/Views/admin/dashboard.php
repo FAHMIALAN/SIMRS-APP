@@ -5,7 +5,7 @@
 <!-- Statistics Section -->
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
     <!-- Total Pasien -->
-    <div class="card p-6 flex items-center group hover:border-blue-500 transition-all">
+    <a href="<?= base_url('pasien') ?>" class="card p-6 flex items-center group hover:border-blue-500 transition-all">
         <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-blue-600 group-hover:text-white transition-all">
             <i class="fas fa-users"></i>
         </div>
@@ -13,10 +13,10 @@
             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Pasien</p>
             <h3 class="text-2xl font-bold text-slate-800"><?= $total_pasien ?></h3>
         </div>
-    </div>
+    </a>
     
     <!-- Total Dokter -->
-    <div class="card p-6 flex items-center group hover:border-emerald-500 transition-all">
+    <a href="<?= base_url('admin/dokter') ?>" class="card p-6 flex items-center group hover:border-emerald-500 transition-all">
         <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-emerald-600 group-hover:text-white transition-all">
             <i class="fas fa-user-md"></i>
         </div>
@@ -24,10 +24,10 @@
             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Dokter</p>
             <h3 class="text-2xl font-bold text-slate-800"><?= $total_dokter ?></h3>
         </div>
-    </div>
+    </a>
     
     <!-- Total Obat -->
-    <div class="card p-6 flex items-center group hover:border-purple-500 transition-all">
+    <a href="<?= base_url('admin/obat') ?>" class="card p-6 flex items-center group hover:border-purple-500 transition-all">
         <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-purple-600 group-hover:text-white transition-all">
             <i class="fas fa-pills"></i>
         </div>
@@ -35,10 +35,10 @@
             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Obat</p>
             <h3 class="text-2xl font-bold text-slate-800"><?= $total_obat ?></h3>
         </div>
-    </div>
+    </a>
     
     <!-- Total Peresepan -->
-    <div class="card p-6 flex items-center group hover:border-amber-500 transition-all">
+    <a href="<?= base_url('admin/peresepan') ?>" class="card p-6 flex items-center group hover:border-amber-500 transition-all">
         <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-amber-600 group-hover:text-white transition-all">
             <i class="fas fa-file-prescription"></i>
         </div>
@@ -46,10 +46,10 @@
             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Peresepan</p>
             <h3 class="text-2xl font-bold text-slate-800"><?= $total_peresepan ?></h3>
         </div>
-    </div>
+    </a>
 
     <!-- Total Penjualan -->
-    <div class="card p-6 flex items-center group hover:border-emerald-500 transition-all">
+    <a href="<?= base_url('admin/peresepan/report') ?>" class="card p-6 flex items-center group hover:border-emerald-500 transition-all">
         <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-emerald-600 group-hover:text-white transition-all">
             <i class="fas fa-money-bill-wave"></i>
         </div>
@@ -57,7 +57,7 @@
             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Penjualan</p>
             <h3 class="text-2xl font-bold text-slate-800">Rp <?= number_format($total_penjualan, 0, ',', '.') ?></h3>
         </div>
-    </div>
+    </a>
 </div>
 
 <!-- Recent Activities Table -->

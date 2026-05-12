@@ -38,7 +38,7 @@
                     <label class="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Stok Awal</label>
                     <div class="relative group">
                         <i class="fas fa-boxes absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
-                        <input type="number" name="stok" class="input-field pl-11" value="<?= old('stok', 0) ?>" required min="0">
+                        <input type="number" name="stok" class="input-field pl-11" value="<?= old('stok', 0) ?>" required min="0" step="any">
                     </div>
                 </div>
 

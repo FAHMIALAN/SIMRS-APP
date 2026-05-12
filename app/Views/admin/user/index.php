@@ -38,9 +38,11 @@
                                     <i class="fas fa-edit text-sm"></i>
                                 </a>
                                 <?php if($u['id'] != session()->get('user_id')): ?>
-                                <a href="<?= base_url('admin/user/delete/'.$u['id']) ?>" class="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-lg transition-all" onclick="return confirm('Hapus user ini?');">
-                                    <i class="fas fa-trash text-sm"></i>
-                                </a>
+                                <form action="<?= base_url('admin/user/delete/'.$u['id']) ?>" method="post" onsubmit="return confirm('Hapus user ini?');">
+                                    <button type="submit" class="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-lg transition-all">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </form>
                                 <?php endif; ?>
                             </td>
                         </tr>

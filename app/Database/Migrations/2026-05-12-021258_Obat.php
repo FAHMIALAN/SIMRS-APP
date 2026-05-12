@@ -24,9 +24,9 @@ class Obat extends Migration
                 'constraint' => '50',
             ],
             'stok' => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'default'    => 0,
+                'type'       => 'DECIMAL',
+                'constraint' => '10,2',
+                'default'    => 0.00,
             ],
             'harga' => [
                 'type'       => 'DECIMAL',
